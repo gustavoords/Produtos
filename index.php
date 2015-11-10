@@ -27,15 +27,21 @@ $sql = "INSERT INTO cadastrar (Nome, Valor, Quantidade, Data) VALUES (:Nome, :Va
     }
     
 ?>
+      <center>
+        <font class="Titulo" >Cadastro de Produtos </font> </br>
+        </br>
+        <div class="large-3 large-centered columns">
+            <form method="post">
+                <div class="large-12 columns">
 
-        <div class="Titulo">Cadastro de Produtos</div>  
-        <form method="post">
-            <div class="large-3 columns">
-       Nome           <input type="text" class="large-3 columns" name="Nome"><br>
-       Valor      <br><input type="text" name="Valor"><br>
-       Quantidade <br><input type="text"  name="Quantidade"></br>
-       Data           <input type="text" name="Data">
-                      <input type="submit" class="button tiny" value="Cadastrar">
-            </div> </form>
-        
+           Nome           <input type="text" name="Nome"><br>
+           Valor      <br><input type="text" name="Valor"><br>
+           Quantidade <br><input type="text"  name="Quantidade"></br>
+           Data           <input type="text" name="Data">
+                          <input type="submit" class="button tiny" value="Cadastrar">
+                </div>
+            </form>
+        </div>
+            
+        </center>
         

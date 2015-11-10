@@ -1,18 +1,28 @@
+*{
+     margin: 0px;
+     padding: 0px;
+}
+
+ 
+
+
 .Titulo{
     font-family:'Agency FB';
     color:'red';
     font-size: 30;
-    float: center;
+    float: right;
+    margin-right: 590px;
 }
 .buscar{
     float: right;
     margin-right: 20px;
-     margin-top: 60px;
+     margin-top: 10px;
+     width: 350px;
     
 }
 .inputbusca{
     width: 10px;
-    margin-top: -30px;
+    margin-top: 10px;
 }
 table{
     margin-top: 50px;
@@ -23,3 +33,14 @@ table{
 td{
     width: 10px;
 }
+Cadastrar{
+    float: right;
+    margin-left: 500px;
+}
+
+
+.small-12 collumns{
+    
+    
+}
+
