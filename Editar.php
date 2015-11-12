@@ -12,7 +12,7 @@ include_once("header.php");
 
                         
 
-        
+
         $sql = "SELECT * FROM `cadastrar` WHERE `Id`=:`Id`";
         $prepare = $conexao->prepare($sql);
               $prepare->execute();
@@ -30,8 +30,8 @@ include_once("header.php");
        Valor      <br><input type="text" value="<?=$linha['Valor']?>" name="Valor"><br>
        Quantidade <br><input type="text" value="<?=$linha['Quantidade']?>" name="Quantidade"></br>
        Data           <input type="text" value="<?=$linha['Data']?>" name="Data">
-                      <input type="submit" class="button tiny" value="Editar">
-                      <input type="hidden"  value="<?=$linha['Id']?>" name="Editar2" />
+                      <input type="submit" value="Editar">
+                      <input type="hidden" value="<?=$linha['Id']?>" name="Editar2" />
             </div> </form>
         
             
@@ -56,6 +56,5 @@ include_once("header.php");
     
     
              }
-             
              }
    ?>

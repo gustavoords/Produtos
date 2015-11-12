@@ -1,3 +1,13 @@
+<?php session_start(); 
+
+ if(isset($_SESSION['admin'])){
+        header("Location: /Visualizar.php");
+    }
+    
+    if(isset($_SESSION['usuario'])){
+        header("Location: /VisualizarUsuario.php");
+    }
+    ?>
 
 <title>inicial</title>
 <link rel="stylesheet" href="/css/foundation.min.css" />
@@ -8,22 +18,23 @@
 include_once("global.php");
 include_once("footer.php");
 include_once("header.php");
+include_once("Menu.php");
 ?>
-<!--        //input para fazer busca-->
+                                <!--        //input para fazer busca-->
 
-<div class="buscar">
-    <form method="post" class="small-12 columns">
-        <input type="text" class="inputbusca" name="Palavra" placeholder="Nome ou Valor" />
-        <input type="submit" class="button tiny"  value="Buscar" name="Botao" />
-    </form>
-</div>
-<?php
-if (isset($_POST['Palavra']) and !empty($_POST['Palavra']) and isset($_POST['Botao'])) {
-    $Palavra = $_POST['Palavra'];
-    $Botao = $_POST['Botao'];
+                                <div class="buscar">
+                                    <form method="post" class="small-12 columns">
+                                        <input type="text" class="inputbusca" name="Palavra" placeholder="Nome ou Valor" />
+                                        <input type="submit" class="button tiny"  value="Buscar" name="Botao" />
+                                    </form>
+                                </div>
+                                <?php
+                                if (isset($_POST['Palavra']) and !empty($_POST['Palavra']) and isset($_POST['Botao'])) {
+                                    $Palavra = $_POST['Palavra'];
+                                    $Botao = $_POST['Botao'];
 
-    include_once("Busca.php");
-}
+                                    include_once("Busca.php");
+                                }
 ?>
 
 <br/>
@@ -53,47 +64,52 @@ while ($linha = $prepare->fetch(PDO::FETCH_ASSOC)) {
     echo "<td>" . $linha['Quantidade'] . "</td>";
     echo "<td>" . $linha['Data'] . "</td>";
     ?>   
-    <!-- Delete e Editar -->
+
+                  
+                            <!-- Delete e Editar -->
 
 
-    <!-- Delete -->
-    <td>  <form method="post" action="Visualizar.php">
+                           <!-- Delete -->
+                           <td>  <form method="post" action="Visualizar.php">
 
-            <input type="hidden"  value="<?= $linha['Id'] ?>Deletar" name="Deletar" />
-            <input type="submit"  value="<?= $linha['Id'] ?>Deletar" name="Deletar" />
+                                   <input type="hidden"  value="<?= $linha['Id'] ?>Deletar" name="Deletar" />
+                                   <input type="submit" class="button tiny"  value="<?= $linha['Id'] ?>Deletar" name="Deletar" />
 
 
-        </form> 
-        <!-- editar -->   
-        <form method="post">
+                               </form> 
+                               <!-- editar -->   
+                               <form method="post">
 
-            <input type="hidden"  value="<?= $linha['Id'] ?>" name="Editar" />
-            <input type="submit"  value="<?= $linha['Id'] ?>Editar" name="Editar" />
+                                   <input type="hidden"  value="<?= $linha['Id'] ?>" name="Editar" />
+                                   <input type="submit" class=" button tiny"  value="<?= $linha['Id'] ?>Editar" name="Editar" />
 
-        </form>   </td>
+                               </form>   </td>
 
-    </tr>
-    <?php
-}
-//executando o delete
-if (isset($_POST['Deletar'])) {
-    echo"";
-    $sql = "DELETE FROM cadastrar where `Id`=:Id;";
-    $prepare = $conexao->prepare($sql);
-    $prepare->bindValue(":Id", $_POST['Deletar']);
-    $prepare->execute();
-}
-
+                                                </tr>
+                         <?php
+                     }
+                     //executando o delete
+                     if (isset($_POST['Deletar'])) {
+                         echo"";
+                         $sql = "DELETE FROM cadastrar where `Id`=:Id;";
+                         $prepare = $conexao->prepare($sql);
+                         $prepare->bindValue(":Id", $_POST['Deletar']);
+                         $prepare->execute();
+                     }
+    
 //executando o  editar
 
 if (isset($_POST['Editar'])) {
 
-    $sql = "SELECT * FROM `cadastrar` WHERE `Id`=:Id";
-    $prepare = $conexao->prepare($sql);
-    $prepare->bindValue(":Id", $_POST['Editar']);
-    $prepare->execute();
-    while ($linha = $prepare->fetch(PDO::FETCH_ASSOC)) {
-        ?>
+        
+                        $sql = "SELECT * FROM `cadastrar` WHERE `Id`=:Id";
+                        $prepare = $conexao->prepare($sql);
+                        $prepare->bindValue(":Id", $_POST['Editar']);
+                        $prepare->execute();  
+                        while ($linha = $prepare->fetch(PDO::FETCH_ASSOC)) 
+
+                                        {   
+                        ?>
 
         <div class="Titulo">Editar</div>  
         <form method="post">
@@ -121,12 +137,6 @@ if (isset($_POST['Editar'])) {
         $prepare->bindValue(":Data", $_POST['Data']);
         $prepare->execute();
     }
-    
-
-?>                 
-
-
-
-
-
+    ?>
+     
 </table>
