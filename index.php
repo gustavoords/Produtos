@@ -1,47 +1,86 @@
+<?php
+    session_start();
 
-      <link rel="stylesheet" href="/css/foundation.min.css" />
-       <link rel="stylesheet" href="/Estilo.css" />
-        <link rel="stylesheet" href="/css/normalize.css" />
-        <link rel="stylesheet" href="/icons/foundation-icons.css" />
-            <?php
-      
-include_once("global.php");
-include_once("footer.php");
-include_once("header.php");
+    include_once("Global.php");
 
-if(
-        isset($_POST['Nome']) and
-        isset($_POST['Valor']) and
-        isset($_POST['Quantidade'])
-        ){
-
-
-$sql = "INSERT INTO cadastrar (Nome, Valor, Quantidade, Data) VALUES (:Nome, :Valor, :Quantidade, :Data)";
-        $prepare = $conexao->prepare($sql);
-        $prepare->bindValue(":Nome", $_POST['Nome']);
-        $prepare->bindValue(":Valor", $_POST['Valor']);
-        $prepare->bindValue(":Quantidade", $_POST['Quantidade']);
-        $prepare->bindValue(":Data", $_POST['Data']);
-    $prepare->execute();
-    
+    if(isset($_SESSION['admin'])){
+        header("Location: /Visualizar.php");
     }
     
-?>
-      <center>
-        <font class="Titulo" >Cadastro de Produtos </font> </br>
-        </br>
-        <div class="large-3 large-centered columns">
-            <form method="post">
-                <div class="large-12 columns">
+    if(isset($_SESSION['usuario'])){
+        header("Location: /VisualizarUsuario.php");
+    }
 
-           Nome           <input type="text" name="Nome"><br>
-           Valor      <br><input type="text" name="Valor"><br>
-           Quantidade <br><input type="text"  name="Quantidade"></br>
-           Data           <input type="text" name="Data">
-                          <input type="submit" class="button tiny" value="Cadastrar">
-                </div>
-            </form>
+    if(
+        isset($_POST['Nome']) and
+        isset($_POST['Senha'])
+    ){
+        $sql = "SELECT Nome, Id FROM `usuario` WHERE `Nome`=:Nome and `Senha` =:Senha;";
+        $preparo = $conexao->prepare($sql);
+        $preparo->bindValue(":Nome", $_POST['Nome']);
+        $preparo->bindValue(":Senha", $_POST['Senha']);
+        $preparo->execute();
+
+        if($preparo->rowCount() == 1){ //1 o usuario logou, 0 Nome ou Senha invalidos
+            $linha = $preparo->fetch(PDO::FETCH_ASSOC);
+            $_SESSION['usuario'] = $linha;
+        }else{
+            $sql = "SELECT Nome, Id FROM `admin` WHERE `Nome`=:Nome and `Senha` = :Senha;";
+            $preparo = $conexao->prepare($sql);
+            $preparo->bindValue(":Nome", $_POST['Nome']);
+            $preparo->bindValue(":Senha", $_POST['Senha']);
+            $preparo->execute();
+
+            if($preparo->rowCount() == 1){ //1 o usuario logou, 0 Nome ou Senha invalidos
+                $linha = $preparo->fetch(PDO::FETCH_ASSOC);
+                $_SESSION['suporte'] = $linha;
+            }
+        }
+
+        if(
+        !isset($_SESSION['suporte']) and
+        !isset($_SESSION['usuario'])
+        ){
+            $msg = "Usuario ou Senha InvÃ¡lidos";
+        }else{
+            if(isset($_SESSION['suporte'])){
+                header("Location: /Visualizar.php");
+            }
+            if(isset($_SESSION['usuario'])){
+                header("Location: /Visualizar.php");
+            }
+        }
+    }
+?>
+
+<?php include_once ("header.php"); ?>
+
+<?php  if(isset($msg)){ ?>
+    <div data-alert class="alert-box alert">
+        <?= $msg ?>
+        <a href="#" class="close">&times;</a>
+    </div>
+<?php } ?>
+
+<form method="post">
+    <div class="row login">
+        <div class="large-12 small-12 medium-12 columns">
+            <label>
+                Nome:
+                <input type="text" name="Nome" />
+            </label>
         </div>
-            
-        </center>
-        
+        <div class="large-12 small-12 medium-12 columns">
+            <label>
+                Senha:
+                <input type="password" name="Senha" />
+            </label>
+        </div>
+        <div class="large-12 small-12 medium-12 columns">
+            <input class="button tiny" type="submit" value="Entrar" />
+        </div>
+    </div>
+</form>
+
+
+<?php include_once ("footer.php"); ?>
