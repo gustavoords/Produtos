@@ -8,5 +8,6 @@
     <link rel="stylesheet" href="/css/foundation-icons.css" />
     <link rel="stylesheet" href="/css/app.css" />
     <script src="/js/vendor/modernizr.js"></script>
+    <script src="/js/vendor/modernizr.js"></script>
 </head>
 <body>

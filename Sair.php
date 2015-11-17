@@ -12,3 +12,5 @@ $_SESSION['suporte'] = null;
 unlink($_SESSION);
 
 header("Location: /");
+
+session_destroy();

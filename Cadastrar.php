@@ -4,22 +4,24 @@
         <link rel="stylesheet" href="/css/normalize.css" />
         <link rel="stylesheet" href="/icons/foundation-icons.css" />
             <?php
-      
+   session_start(); 
+
 include_once("global.php");
 include_once("footer.php");
 include_once("header.php");
 include_once("Menu.php");
 
+        
 if(
         isset($_POST['Nome']) and
         isset($_POST['Valor']) and
-        isset($_POST['Quantidade'])and
-        isset($_SESSION['admin'])
+        isset($_POST['Quantidade'])
+       
      
     
         ){
 
-
+            
 $sql = "INSERT INTO cadastrar (Nome, Valor, Quantidade, Data) VALUES (:Nome, :Valor, :Quantidade, :Data)";
         $prepare = $conexao->prepare($sql);
         $prepare->bindValue(":Nome", $_POST['Nome']);
@@ -29,29 +31,39 @@ $sql = "INSERT INTO cadastrar (Nome, Valor, Quantidade, Data) VALUES (:Nome, :Va
     $prepare->execute();
     
     }
-    
-        if(
-        !isset($_SESSION['admin']) and
-        !isset($_SESSION['usuario'])
-        ){
-            $msg = "Você não tem permissão para adicionar produtos";
-        }else{
-            if(isset($_SESSION['admin'])){
-                header("Location: /Visualizar.php");
-            }
-            if(isset($_SESSION['usuario'])){
-            header("Location: /VisualizarUsuario.php");
-            }
-            }?>
+                        //confere se tem algum login
+   
+                                    if(!isset($_SESSION)){
+                                      $msg = "Você não tem permissão para adicionar produtos";
+                                      //  header("location: Inicio.php");
+
+                                    } 
+                                    if(empty($_SESSION)){
+                                   //  header("location: Inicio.php");
+                                     $msg = "Você não tem permissão para adicionar produtos";
+                                    } 
+                              ?>
+                             <?php     if(isset($msg)){ ?>
+                                 <div data-alert class="alert-box alert">
+                                     <?= $msg ?>
+                                     <a href="#" class="close">&times;</a>
+                                 </div>?>
+                             <?php }
+                             else{    //este else fecha la embaixo
+                                        ?> }
+                                        
+                                        56
+        
+        
         <?php     if(isset($msg)){ ?>
     <div data-alert class="alert-box alert">
         <?= $msg ?>
         <a href="#" class="close">&times;</a>
     </div>
      
-        <?php   }  
-        
-        else{
+        <?php   
+        }
+        else{              
         ?>
      
      
@@ -73,4 +85,4 @@ $sql = "INSERT INTO cadastrar (Nome, Valor, Quantidade, Data) VALUES (:Nome, :Va
         </div>
             
         </center>
-        <?php } ?>
+<?php } }

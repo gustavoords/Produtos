@@ -1,13 +1,5 @@
 <?php session_start(); 
-
- if(isset($_SESSION['admin'])){
-        header("Location: /Visualizar.php");
-    }
-    
-    if(isset($_SESSION['usuario'])){
-        header("Location: /VisualizarUsuario.php");
-    }
-    ?>
+?>
 
 <title>inicial</title>
 <link rel="stylesheet" href="/css/foundation.min.css" />
@@ -16,12 +8,31 @@
 <link rel="stylesheet" href="/icons/foundation-icons.css" />
 <?php
 include_once("global.php");
-include_once("footer.php");
 include_once("header.php");
 include_once("Menu.php");
-?>
-                                <!--        //input para fazer busca-->
 
+  
+       if(!isset($_SESSION)){
+         $msg = "Você não tem permissão para adicionar produtos";
+         //  header("location: Inicio.php");
+         
+       } 
+       if(empty($_SESSION)){
+      //  header("location: Inicio.php");
+        $msg = "Você não tem permissão para adicionar produtos";
+       } 
+ ?>
+<?php     if(isset($msg)){ ?>
+    <div data-alert class="alert-box alert">
+        <?= $msg ?>
+        <a href="#" class="close">&times;</a>
+    </div>
+<?php }
+else{
+    
+
+?>
+     
                                 <div class="buscar">
                                     <form method="post" class="small-12 columns">
                                         <input type="text" class="inputbusca" name="Palavra" placeholder="Nome ou Valor" />
@@ -88,9 +99,17 @@ while ($linha = $prepare->fetch(PDO::FETCH_ASSOC)) {
                                                 </tr>
                          <?php
                      }
-                     //executando o delete
+                     
                      if (isset($_POST['Deletar'])) {
                          echo"";
+                         
+                         //guardando no histórico
+                         $sql1 = "insert into historico select * from cadastrar where `Id`=:Id";
+                         $prepare = $conexao->prepare($sql1);
+                         $prepare->bindValue(":Id", $_POST['Deletar']);
+                         $prepare->execute();
+                         
+                           //executando o delete
                          $sql = "DELETE FROM cadastrar where `Id`=:Id;";
                          $prepare = $conexao->prepare($sql);
                          $prepare->bindValue(":Id", $_POST['Deletar']);
@@ -137,6 +156,9 @@ if (isset($_POST['Editar'])) {
         $prepare->bindValue(":Data", $_POST['Data']);
         $prepare->execute();
     }
-    ?>
-     
+    
+}
+    
+    include_once("footer.php");?>
+
 </table>

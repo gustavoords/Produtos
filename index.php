@@ -1,6 +1,9 @@
 <?php
     session_start();
-
+include_once("global.php");
+include_once("footer.php");
+include_once("header.php");
+include_once("Menu.php");
     include_once("Global.php");
 
     if(isset($_SESSION['admin'])){
